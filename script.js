@@ -36,6 +36,9 @@ addEventListener("DOMContentLoaded", (event) => {
     for (let i = 0; i < operators.length; i++){
         // Get operator and move on to second number
         operators[i].addEventListener('click', function () {
+            if(calculator.firstTerm == ""){
+                return false
+            }
             screen = ""
             if(calculator.operatorBool == false){
             calculator.operator = operators[i].dataset.value
