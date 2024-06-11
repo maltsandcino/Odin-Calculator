@@ -4,62 +4,51 @@ let calculator = {}
     calculator.secondTerm = "";
     calculator.operator = "";
     calculator.operatorBool = false;
+    calculator.operated = false;
     calculator.secondOperator = "";
     calculator.secondOperatorBool = false;
 
 addEventListener("DOMContentLoaded", (event) => {
 
-    // let displayValue = 0;
-    let screen = "";
-    let display = document.getElementById("display")
+    document.getElementById("numbers").addEventListener('click', function (event){
+        let targ = event.target.dataset.value;
+        let screen = document.getElementById("display");
 
-    display.innerHTML = screen
-
-    digits = document.querySelectorAll(".number")
-    operators = document.querySelectorAll(".operator")
-
-    for (let i = 0; i < digits.length; i++){
-        // Display digit of clicked button. We want to make this the display, and want to save the list of commands we enter
-        digits[i].addEventListener('click', function () {
-            screen = screen + digits[i].dataset.value
-            
+        if(!isNaN(targ)){
             if(calculator.operatorBool == false){
-            calculator.firstTerm = screen}
-            else{
-                calculator.secondTerm = screen
+                calculator.firstTerm = calculator.firstTerm += targ
+                screen.innerHTML = calculator.firstTerm
             }
-            
-            display.innerHTML = screen
-        })
-    }
+            if(calculator.operatorBool == true){
+                calculator.secondTerm = calculator.secondTerm += targ
+                screen.innerHTML = calculator.secondTerm
+            }
+        }
+        if(targ == "clear"){
+            calculator.firstTerm = "";
+            calculator.secondTerm = "";
+            calculator.operator = "";
+            calculator.operatorBool = false;
+            calculator.operated = false;
+            calculator.secondOperator = "";
+            calculator.secondOperatorBool = false;
+            screen.innerHTML = calculator.firstTerm
+        }
+        if(targ == "=" && (!calculator.firstTerm == "") && (!calculator.secondTerm == "")){
+            console.log(targ)
+            calculate(calculator)
+        }
+        if((targ == "*" || targ == "+" || targ == "-" || targ == "%") && calculator.operatorBool == false){
+            calculator.operator = targ;
+            calculator.operatorBool = true;
+            screen.innerHTML = targ;
+        }
+    })
     
-    for (let i = 0; i < operators.length; i++){
-        // Get operator and move on to second number
-        operators[i].addEventListener('click', function () {
-            if(calculator.firstTerm == ""){
-                return false
-            }
-            screen = ""
-            if(calculator.operatorBool == false){
-            calculator.operator = operators[i].dataset.value
-            calculator.operatorBool = true;}
-            else{
-                //second operation is hit, this should trigger a calculation AND looking for a second term
-                if(calculator.secondOperatorBool == false){
-                calculator.secondOperator = operators[i].dataset.value;
-                calculator.secondOperatorBool = true;
-                calculate(calculator)}
-                }
-            
-            
-            display.innerHTML = screen
-        })
-    }
+})
 
-    //calculate button
-    document.getElementById("calculate").addEventListener('click', calculate(calculator))
-    //clear button
-    document.getElementById("clear").addEventListener('click', function () {
+function clear(){
+    console.log("clear")
     calculator.firstTerm = "";
     calculator.secondTerm = "";
     calculator.operator = "";
@@ -67,19 +56,29 @@ addEventListener("DOMContentLoaded", (event) => {
     calculator.secondOperator = "";
     display.innerHTML = ""
     screen = ""
+}
 
-    })
+function calculate(a){
+    console.log("calculate")
     
-})
 
-function calculate(obj){
-    if(!calculator.secondOperator == ""){
+    if(!a.secondOperator == ""){
         console.log("we are going in")
+    }
+
+    if(calculator.operator == "+"){
+        console.log("adding")
+        let sum = add(parseInt(a.firstTerm), parseInt(a.secondTerm))
+        console.log(sum)
+        let display = document.getElementById("display");
+        display.innerHTML = sum
     }
 
 }
 
 function add(a, b){
+    console.log(a)
+    console.log(b)
     return a + b
 }
 
