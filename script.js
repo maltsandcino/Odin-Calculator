@@ -88,8 +88,13 @@ function calculate(a){
         display.innerHTML = sum
     }
     if(calculator.operator == "÷"){
+        if(calculator.secondTerm == "0"){
+            display.innerHTML = "No"
+            calculator.secondTerm = "1"
+            return false;
+        }
         sum = div(parseFloat(a.firstTerm), parseFloat(a.secondTerm))
-        display.innerHTML = sum
+        display.innerHTML = sum.toFixed(1)
     }
     if(calculator.secondOperatorBool == false){
     calculator.firstTerm = sum;
